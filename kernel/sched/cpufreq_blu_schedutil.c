@@ -16,6 +16,7 @@
 #include <linux/slab.h>
 #include <trace/events/power.h>
 #include <linux/sched/sysctl.h>
+#include <uapi/linux/sched/types.h>
 #include "sched.h"
 #include "tune.h"
 
