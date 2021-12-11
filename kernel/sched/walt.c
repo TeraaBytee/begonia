@@ -54,6 +54,9 @@ __read_mostly unsigned int walt_ravg_window =
 #define MIN_SCHED_RAVG_WINDOW ((10000000 / TICK_NSEC) * TICK_NSEC)
 #define MAX_SCHED_RAVG_WINDOW ((1000000000 / TICK_NSEC) * TICK_NSEC)
 
+/* Window size (in ns) */
+__read_mostly unsigned int sched_ravg_window = MIN_SCHED_RAVG_WINDOW;
+
 static unsigned int sync_cpu;
 static ktime_t ktime_last;
 static __read_mostly bool walt_ktime_suspended;
