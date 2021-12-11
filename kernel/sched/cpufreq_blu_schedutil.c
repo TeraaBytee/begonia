@@ -76,7 +76,7 @@ struct sugov_cpu {
 	unsigned long iowait_boost_max;
 	u64 last_update;
 
-	struct sched_walt_cpu_load walt_load;
+	struct sched_walt_cpu_load *walt_load;
 
 	/* The fields below are only needed when sharing a policy. */
 	unsigned long util;
