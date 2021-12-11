@@ -314,7 +314,7 @@ static void sugov_walt_adjust(struct sugov_cpu *sg_cpu, unsigned long *util,
 {
 	struct sugov_policy *sg_policy = sg_cpu->sg_policy;
 	bool is_migration = sg_cpu->flags & SCHED_CPUFREQ_INTERCLUSTER_MIG;
-	unsigned long nl = sg_cpu->walt_load.nl;
+	unsigned long nl = sg_cpu->walt_load;
 	unsigned long cpu_util = sg_cpu->util;
 	bool is_hiload;
 
@@ -332,7 +332,7 @@ static void sugov_walt_adjust(struct sugov_cpu *sg_cpu, unsigned long *util,
 		*util = *max;
 
 	if (sg_policy->tunables->pl)
-		*util = max(*util, sg_cpu->walt_load.pl);
+		*util = max(*util, sg_cpu->walt_load);
 }
 
 #ifdef CONFIG_NO_HZ_COMMON
@@ -389,12 +389,12 @@ static void sugov_update_single(struct update_util_data *hook, u64 time,
 		sg_cpu->util = util;
 		sg_cpu->max = max;
 		sg_cpu->flags = flags;
-		sugov_calc_avg_cap(sg_policy, sg_cpu->walt_load.ws,
+		sugov_calc_avg_cap(sg_policy, sg_cpu->walt_load,
 				   sg_policy->policy->cur);
 		trace_sugov_util_update(sg_cpu->cpu, sg_cpu->util,
 					sg_policy->avg_cap,
-					max, sg_cpu->walt_load.nl,
-					sg_cpu->walt_load.pl, flags);
+					max, sg_cpu->walt_load,
+					sg_cpu->walt_load, flags);
 		sugov_iowait_boost(sg_cpu, &util, &max);
 		sugov_walt_adjust(sg_cpu, &util, &max);
 		next_f = get_next_freq(sg_policy, util, max);
@@ -488,12 +488,12 @@ static void sugov_update_shared(struct update_util_data *hook, u64 time,
 	sugov_set_iowait_boost(sg_cpu, time, flags);
 	sg_cpu->last_update = time;
 
-	sugov_calc_avg_cap(sg_policy, sg_cpu->walt_load.ws,
+	sugov_calc_avg_cap(sg_policy, sg_cpu->walt_load,
 			   sg_policy->policy->cur);
 
 	trace_sugov_util_update(sg_cpu->cpu, sg_cpu->util, sg_policy->avg_cap,
-				max, sg_cpu->walt_load.nl,
-				sg_cpu->walt_load.pl, flags);
+				max, sg_cpu->walt_load,
+				sg_cpu->walt_load, flags);
 
 	if (sugov_should_update_freq(sg_policy, time)) {
 		if (flags & SCHED_CPUFREQ_RT_DL) {
