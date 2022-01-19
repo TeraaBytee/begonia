@@ -103,7 +103,7 @@ Compile() {
     make  -j$(nproc --all)  O=out \
                             PATH="$GCC64/bin:$GCC/bin:/usr/bin:$PATH" \
                             AR=aarch64-elf-ar \
-                            LD=ld.lld \
+                            LD=aarch64-elf-ld \
                             NM=llvm-nm \
                             OBCOPY=llvm-objcopy \
                             OBJDUMP=aarch64-elf-objdump \
